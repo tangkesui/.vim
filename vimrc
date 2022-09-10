@@ -69,7 +69,6 @@ noremap tt :NERDTreeToggle<CR>
 call plug#begin('~/.vim/plugged')
 
 Plug 'preservim/nerdtree'
-Plug 'Valloric/YouCompleteMe'
 Plug 'dense-analysis/ale'
 Plug 'junegunn/vim-easy-align'
 Plug 'https://github.com/junegunn/vim-github-dashboard.git'
