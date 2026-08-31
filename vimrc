@@ -1,7 +1,12 @@
-let mapleader=" "
-set nocompatible
+" Portable, plugin-free Vim configuration.
+" Mirrors the editing habits from ~/.config/nvim without requiring Neovim.
 
-syntax on
+set nocompatible
+let mapleader = " "
+
+syntax enable
+filetype plugin indent on
+
 set mouse=a
 set number
 set wrap
@@ -10,76 +15,53 @@ set softtabstop=2
 set shiftwidth=2
 set autoindent
 set smartindent
-set completeopt=menu,menuone
-set nobackup
-set noswapfile
-set wildmenu
 set hlsearch
 set ignorecase
 set smartcase
-
-" Movement: i=up  k=down  j=left  l=right
-noremap k j
-noremap i k
-noremap j h
-noremap K 5j
-noremap I 5k
-
-" Insert mode (h replaces i)
-noremap h i
-noremap H I
-
-" Search navigation
-noremap <Leader>- Nzz
-noremap <Leader>= nzz
-noremap <Leader><CR> :noh<CR>
-
-" Window splits
-noremap <Leader>n :vsplit<CR>
-noremap <Leader>N :split<CR>
-
-" Window navigation (remapped directions)
-noremap <Leader>j <C-w>h
-noremap <Leader>l <C-w>l
-noremap <Leader>k <C-w>j
-noremap <Leader>i <C-w>k
-
-" Window resize with arrow keys
-noremap <DOWN>  :res +5<CR>
-noremap <UP>    :res -5<CR>
-noremap <LEFT>  :vertical resize +5<CR>
-noremap <RIGHT> :vertical resize -5<CR>
-
-" Tab management
-noremap mm :tabe<CR>
-noremap [ :-tabnext<CR>
-noremap ] :+tabnext<CR>
-
-" ── Sane defaults (from Arch /etc/vimrc) ──────────────────────────────────────
-if &compatible
-  set nocompatible
-endif
-
+set wildmenu
+set completeopt=menu,menuone,noselect
+set autoread
+set nobackup
+set noswapfile
 set backspace=indent,eol,start
 set ruler
-set suffixes+=.aux,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.inx,.jpg,.log,.out,.png,.toc
-set suffixes-=.h
-set suffixes-=.obj
 
-if exists('$XDG_CACHE_HOME')
-  let &g:directory=$XDG_CACHE_HOME
-else
-  let &g:directory=$HOME . '/.cache'
+" Use the system clipboard when this Vim build provides one.
+if has('unnamedplus')
+  set clipboard=unnamedplus
+elseif has('clipboard')
+  set clipboard=unnamed
 endif
-let &g:undodir=&g:directory . '/vim/undo//'
-let &g:backupdir=&g:directory . '/vim/backup//'
-let &g:directory.='/vim/swap//'
-if ! isdirectory(expand(&g:directory))
-  silent! call mkdir(expand(&g:directory), 'p', 0700)
-endif
-if ! isdirectory(expand(&g:backupdir))
-  silent! call mkdir(expand(&g:backupdir), 'p', 0700)
-endif
-if ! isdirectory(expand(&g:undodir))
-  silent! call mkdir(expand(&g:undodir), 'p', 0700)
-endif
+
+" Movement: i=up, k=down, j=left, l=right.
+nnoremap i k
+xnoremap i k
+onoremap i k
+nnoremap k j
+xnoremap k j
+onoremap k j
+nnoremap j h
+xnoremap j h
+onoremap j h
+
+" Insert mode: h replaces the original i key.
+nnoremap h i
+nnoremap H I
+nnoremap I <Nop>
+
+" Search and reload.
+nnoremap <silent> <Leader>- Nzz
+xnoremap <silent> <Leader>- Nzz
+nnoremap <silent> <Leader>= nzz
+xnoremap <silent> <Leader>= nzz
+nnoremap <silent> <Leader>r :edit<CR>
+nnoremap <silent> <Leader><CR> :nohlsearch<CR>
+
+" Five-line movement, centered after each jump.
+nnoremap <silent> <M-i> 5kzz
+nnoremap <silent> <M-k> 5jzz
+nnoremap <silent> <Up> 5kzz
+nnoremap <silent> <Down> 5jzz
+
+" Open a new tab. Use Vim's built-in gt/gT to switch tabs.
+nnoremap <silent> mm :tabedit<CR>
